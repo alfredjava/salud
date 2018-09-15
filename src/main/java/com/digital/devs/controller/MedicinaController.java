@@ -15,54 +15,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digital.devs.model.Recordatorio;
-import com.digital.devs.service.IRecordatorioService;
+import com.digital.devs.model.Medicina;
+import com.digital.devs.service.IMedicinaService;
 
 
 
 @RestController
-@RequestMapping(value = "/recordatorios")
-public class RecordatorioController {
+@RequestMapping(value = "/medicinas")
+public class MedicinaController {
 
 	@Autowired
-	private IRecordatorioService service;
+	private IMedicinaService service;
 	
 	@GetMapping
-	public List<Recordatorio> listar(){
+	public List<Medicina> listar(){
 		return service.listar();
-	}
-	@GetMapping(value = "paciente/{id}/{dia}")
-	public List<Recordatorio> listarByPaciente(@PathVariable("id") Integer id,
-			@PathVariable("dia") String dia){
-		return service.listarByPaciente(id,dia);
-	}
-	
-	@GetMapping(value = "paciente/{id}")
-	public List<Recordatorio> listarByPaciente(@PathVariable("id") Integer id){
-		return service.listarByPacienteID(id);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public Recordatorio listarPorId(@PathVariable("id") Integer id){
-		Optional<Recordatorio> op = service.listarPorId(id);
-		return op.isPresent() ? op.get() : new Recordatorio();
+	public Medicina listarPorId(@PathVariable("id") Integer id){
+		Optional<Medicina> op = service.listarPorId(id);
+		return op.isPresent() ? op.get() : new Medicina();
 	}
+
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Recordatorio registrar(@RequestBody Recordatorio persona) {
+	public Medicina registrar(@RequestBody Medicina persona) {
 		return service.registrar(persona);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Recordatorio modificar(@RequestBody Recordatorio persona) {
+	public Medicina modificar(@RequestBody Medicina persona) {
 		return service.modificar(persona);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public Integer eliminar(@PathVariable("id") Integer id) {
-		Optional<Recordatorio> opt = service.listarPorId(id);
+		Optional<Medicina> opt = service.listarPorId(id);
 		if (opt.isPresent()) {
-			Recordatorio per = new Recordatorio();
+			Medicina per = new Medicina();
 			per.setId(id);
 			service.eliminar(per);
 			return 1;
@@ -70,5 +61,8 @@ public class RecordatorioController {
 		return 0;
 	}
 	
-	
+	@GetMapping(value = "paciente/{id}")
+	public List<Medicina> listarPorIdPaciente(@PathVariable("id") Integer id){		
+		return service.listarPorIdPaciente(id);
+	}
 }

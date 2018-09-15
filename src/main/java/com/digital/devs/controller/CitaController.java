@@ -15,60 +15,58 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digital.devs.model.Recordatorio;
-import com.digital.devs.service.IRecordatorioService;
+import com.digital.devs.model.Cita;
+import com.digital.devs.service.ICitaService;
 
 
 
 @RestController
-@RequestMapping(value = "/recordatorios")
-public class RecordatorioController {
+@RequestMapping(value = "/citas")
+public class CitaController {
 
 	@Autowired
-	private IRecordatorioService service;
+	private ICitaService service;
 	
 	@GetMapping
-	public List<Recordatorio> listar(){
+	public List<Cita> listar(){
 		return service.listar();
-	}
-	@GetMapping(value = "paciente/{id}/{dia}")
-	public List<Recordatorio> listarByPaciente(@PathVariable("id") Integer id,
-			@PathVariable("dia") String dia){
-		return service.listarByPaciente(id,dia);
-	}
-	
-	@GetMapping(value = "paciente/{id}")
-	public List<Recordatorio> listarByPaciente(@PathVariable("id") Integer id){
-		return service.listarByPacienteID(id);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public Recordatorio listarPorId(@PathVariable("id") Integer id){
-		Optional<Recordatorio> op = service.listarPorId(id);
-		return op.isPresent() ? op.get() : new Recordatorio();
+	public Cita listarPorId(@PathVariable("id") Integer id){
+		Optional<Cita> op = service.listarPorId(id);
+		return op.isPresent() ? op.get() : new Cita();
+	}
+	@GetMapping(value = "paciente/{id}")
+	public List<Cita> listarByPaciente(@PathVariable("id") Integer id){
+		return service.listarPorIdPaciente(id);
+	}
+	@GetMapping(value = "paciente/{id}/{dia}")
+	public List<Cita> listarByPacienteDia(@PathVariable("id") Integer id,
+			@PathVariable("dia") String dia){
+		return service.listarByPacienteDia(id,dia);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Recordatorio registrar(@RequestBody Recordatorio persona) {
+	public Cita registrar(@RequestBody Cita persona) {
 		return service.registrar(persona);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Recordatorio modificar(@RequestBody Recordatorio persona) {
+	public Cita modificar(@RequestBody Cita persona) {
 		return service.modificar(persona);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public Integer eliminar(@PathVariable("id") Integer id) {
-		Optional<Recordatorio> opt = service.listarPorId(id);
+		Optional<Cita> opt = service.listarPorId(id);
 		if (opt.isPresent()) {
-			Recordatorio per = new Recordatorio();
+			Cita per = new Cita();
 			per.setId(id);
 			service.eliminar(per);
 			return 1;
 		}
 		return 0;
 	}
-	
 	
 }

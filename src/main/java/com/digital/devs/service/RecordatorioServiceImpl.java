@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digital.devs.dao.IRecordatorioDAO;
+import com.digital.devs.model.Paciente;
 import com.digital.devs.model.Recordatorio;
 
 @Service
@@ -43,5 +44,19 @@ public class RecordatorioServiceImpl implements IRecordatorioService {
 	@Override
 	public void eliminar(Recordatorio per) {
 		dao.delete(per);
+	}
+
+	@Override
+	public List<Recordatorio> listarByPaciente(Integer id, String dia) {
+		Paciente pa=new Paciente();
+		pa.setId(id);
+		return dao.findByPacienteAndDia(pa, dia);
+	}
+
+	@Override
+	public List<Recordatorio> listarByPacienteID(Integer id) {
+		Paciente pa=new Paciente();
+		pa.setId(id);
+		return dao.findByPaciente(pa);
 	}
 }

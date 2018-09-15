@@ -12,5 +12,7 @@ public interface IRecordatorioService {
 	Recordatorio registrar(Recordatorio per);
 	Recordatorio modificar(Recordatorio per);
 	void eliminar(Recordatorio per);
+	List<Recordatorio> listarByPaciente(Integer id, String dia);
+	List<Recordatorio> listarByPacienteID(Integer id);
 
 }
